@@ -49,9 +49,12 @@ void switch_interrupt_handler()
     setGreen();
     break;
   case 2:
+    setGreen();
+    setRed();
     buzzer_set_period(1000);
     break;
   case 3:
+    dim_leds();
     buzzer_set_period(2000);
     break;
   case 4:

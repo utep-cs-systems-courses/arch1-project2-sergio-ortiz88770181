@@ -3,5 +3,6 @@
 
 void setRed();
 void setGreen();
+void dim_leds();
 
 #endif
