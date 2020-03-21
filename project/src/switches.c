@@ -5,7 +5,7 @@
 
 char switch_state_changed;
 
-int state = 0;
+int cur_state = 0;
 
 static char switch_update_interrupt_sense()
 {
@@ -25,38 +25,39 @@ void switch_init()
   switch_interrupt_handler();
 }
 
+int determineState(char p2val)
+{
+  if (p2val & SW1 ? 0 : 1)
+    return 1;
+  if (p2val & SW2 ? 0 : 1)
+    return 2;
+  if (p2val & SW3 ? 0 : 1)
+    return 3;
+  if (p2val & SW4 ? 0 : 1)
+    return 4;
+  return 0;
+}
+
 void switch_interrupt_handler()
 {
   switch_state_changed = 0;
   char p2val = switch_update_interrupt_sense();
+  cur_state = determineState(p2val);
 
-  if (p2val & SW1 ? 0 : 1) {
-    state = 01;
-  }
-  if (p2val & SW2 ? 0 : 1) {
-    state = 02;
-  }
-  if (p2val & SW3 ? 0 : 1) {
-    state = 03;
-  }
-  if (p2val & SW4 ? 0 : 1) {
-    state = 04;
-  }
-
-  switch (state) {
-  case 01:
+  switch (cur_state) {
+  case 1:
     switch_state_changed = 1;
     setGreen();
     break;
-  case 02:
+  case 2:
     switch_state_changed = 1;
     buzzer_set_period(1000);
     break;
-  case 03:
+  case 3:
     switch_state_changed = 1;
     buzzer_set_period(2000);
     break;
-  case 04:
+  case 4:
     switch_state_changed = 1;
     setRed();
     break;
