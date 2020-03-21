@@ -46,22 +46,20 @@ void switch_interrupt_handler()
 
   switch (cur_state) {
   case 1:
-    switch_state_changed = 1;
     setGreen();
     break;
   case 2:
-    switch_state_changed = 1;
     buzzer_set_period(1000);
     break;
   case 3:
-    switch_state_changed = 1;
     buzzer_set_period(2000);
     break;
   case 4:
-    switch_state_changed = 1;
     setRed();
     break;
   default:
-    break;
+    break;  
   }
+  if (cur_state < 5)
+    switch_state_changed = 1;
 }
